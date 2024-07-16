@@ -1,3 +1,10 @@
+.tw-tittleCard{
+  margin-top: 0rem;
+  font-family: inherit;
+  font-style: bold;
+  color: #fff;
+}
+
 .tw-followCard {
     display: flex;
     align-items: center;

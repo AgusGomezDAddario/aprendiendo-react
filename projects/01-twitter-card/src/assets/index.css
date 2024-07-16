@@ -11,4 +11,11 @@ body{
     display: flex;
     flex-direction: column;
     gap: 8px;
+    border: 3px solid #fff;
+    border-radius: 8px;
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+    padding-right: 2rem;
+    padding-left: 1rem;
 }
+

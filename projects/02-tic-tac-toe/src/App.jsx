@@ -1,10 +1,10 @@
-import { useState } from "react"
+import { useState} from "react"
 import confetti from "canvas-confetti"
 import { Square } from "./assets/components/Square.jsx"
 import { TURNS } from "./constants.js"
 import { checkWinnerFrom, checkEndGame } from "./assets/logic/board.js"
 import { WinnerModal } from "./assets/components/WinnerModal.jsx"
-import { getGameFromStorage, resetGameFromStorage } from "./assets/logic/storage/index.js"
+import { setGameFromStorage, resetGameFromStorage } from "./assets/logic/storage/index.js"
 
 function App() {
   // Como los state no pueden estar adentro de un if, no se revisa si existe algo ya guardado en el localStorage
@@ -42,7 +42,7 @@ function App() {
     setTurn(newTurn) //Se cambia el turno actual por el nuevo turno
 
     // Persistencia de la partida
-    getGameFromStorage({ board: newBoard, turn: newTurn })
+    setGameFromStorage({ board: newBoard, turn: newTurn })
 
     // Revision de ganador
     const newWinner = checkWinnerFrom(newBoard)

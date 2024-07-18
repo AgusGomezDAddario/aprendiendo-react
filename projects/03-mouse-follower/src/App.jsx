@@ -1,17 +1,27 @@
 import './App.css'
 import { useEffect, useState } from 'react'
-function App() {
+
+const FollowMouse = () => {
   const [enabled, setEnabled] = useState(false)
+  const [position, setPosition] = useState({ x: 0, y: 0 }) // Es una buena practica inicializar el estado con un valor el tipo de dato a usar
 
   useEffect(() => {
-    console.log('effect', {enabled})
-    
+    console.log('effect', { enabled })
+
     const handleMove = (event) => {
-      const { clientX, clientY } = event
-      console.log('handleMove', {clientX, clientY})
+      const { clientX, clientY } = event // Posicion del puntero en la pantalla
+      setPosition({ x: clientX, y: clientY })
     }
-    window.addEventListener('pointermove', handleMove)
-    }, [enabled])
+
+    if (enabled) {
+      window.addEventListener('pointermove', handleMove)
+    }
+
+    return () => {
+      window.removeEventListener('pointermove', handleMove) // Se limpia el efecto cuando cambia el valor de la dependencia o cuando se renderiza el componente
+    }
+
+  }, [enabled])
 
   return (
     <main>
@@ -26,12 +36,22 @@ function App() {
         top: -20,
         width: 40,
         height: 40,
-        transform: 'translate(0px, 0px)'
+        transform: `translate(${position.x}px, ${position.y}px)`,
       }}
       />
       <button onClick={() => setEnabled(!enabled)}>
         {enabled ? 'Desactivar' : 'Activar'} seguir puntero
       </button>
+    </main>
+  )
+}
+
+function App() {
+  const [mounted, setMounted] = useState(true)
+
+  return (
+    <main>
+      <FollowMouse />
     </main>
   )
 }

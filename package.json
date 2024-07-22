@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -13,6 +11,8 @@
     "canvas-confetti": "1.9.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.45.3",
+    "@types/node": "^20.14.11",
     "standard": "^17.1.0"
   },
   "eslintConfig": {

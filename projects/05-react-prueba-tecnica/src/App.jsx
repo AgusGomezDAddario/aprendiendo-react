@@ -1,50 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import { getRandomFact } from './services/facts';
+import { useCatImage } from './hooks/useCatImage';
 
-const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact';
-const CAT_ENDPOINT_IMAGE_URL = 'https://cataas.com/cat/says/';
-const CAT_ENDPOINT_IMAGE_PARAMS = '?size=10&color=red';
-
-export function App (){
+const useCatFact = () => {
     const [fact, setFact] = useState();
-    const [imageUrl, setImageUrl] = useState();
-    const [factError, setFactError] = useState();
 
-    // Primer efecto para obtener un random fact
-    useEffect(() => {
-        fetch(CAT_ENDPOINT_RANDOM_FACT)
-            .then(res => {
-                if (!res.ok) {
-                    setFactError('Error al obtener el fact')
-                }
-                 return res.json()
-            })
-            .then(data => {
-                const {fact} = data;
-                setFact(fact);
-            })
-    }, []);
+    const refreshFact = () => {
+        getRandomFact().then(newFact => setFact(newFact))
+    }
 
-    // Segundo efecto para obtener la imagen del gato cada vez que cambia el fact
-    useEffect(() => {
-        if (!fact) return
-        const firstWord = fact.split(' ')[0];
+    useEffect(refreshFact, []);
 
-                fetch(`${CAT_ENDPOINT_IMAGE_URL}${firstWord}${CAT_ENDPOINT_IMAGE_PARAMS}`)
-                    // .then(res => res.json())
-                    .then(response => {
-                        const { url } = response
-                        console.log(url)
-                        setImageUrl(url)
-                    })
-    }, [fact]);
+    return { fact, refreshFact}
+}
 
 
-    return(
+export function App() {
+
+    const {fact, refreshFact} = useCatFact();
+    const { imageUrl } = useCatImage({fact});
+
+    const handleClick = async () => {
+        refreshFact();
+    }
+
+    return (
         <main>
             <h1>App de gatitos</h1>
-            {fact && <p>{fact}</p>} 
-            {imageUrl && <img src={imageUrl} alt={`Imagen de gato, obtenida al usar la primera palabra de ${fact}`} />} 
+            <button onClick={handleClick}>Obtener nuevo fact</button>
+            {fact && <p>{fact}</p>}
+            {imageUrl && <img src={imageUrl} alt={`Imagen de gato, obtenida al usar la primera palabra de ${fact}`} />}
         </main>
     )
 }

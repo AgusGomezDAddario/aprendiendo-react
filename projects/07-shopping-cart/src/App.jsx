@@ -5,6 +5,8 @@ import React from 'react'
 import { Header } from "./components/Header"
 import { Footer } from "./components/Footer"
 import { useFilters } from "./hooks/useFilters"
+import { Cart } from "./components/Cart"
+import { CartProvider } from "./contexts/cart"
 
 function App() {
   const [products] = useState(initialProducts)
@@ -13,12 +15,14 @@ function App() {
   const filteredProducts = filterProducts(products)
 
   return (
-    <>
-    <Header />
-    <Products products={filteredProducts} />
-    <Footer filters={filters} />
-    </>
+    <CartProvider>
+      <Header />
+      <Cart />
+      <Products products={filteredProducts} />
+      <Footer filters={filters} />
+    </CartProvider>
   )
 }
+
 
 export default App
